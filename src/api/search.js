@@ -5,18 +5,11 @@ const router = express.Router();
 
 const pg = require("pg");
 const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL || {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-  },
-  ssl: process.env.DATABASE_URL
-    ? {
-        rejectUnauthorized: false,
-      }
-    : false,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
 router.get("/search", async (req, res) => {
@@ -24,10 +17,12 @@ router.get("/search", async (req, res) => {
   page = page ? page : 0;
   console.log("Search anime", term, page);
 
+  const perPage = 50;
+
   let whereClause = "";
-  const params = [page * 10];
+  const params = [page * perPage];
   if (term) {
-    whereClause = `WHERE title ILIKE $2`;
+    whereClause = `WHERE CONCAT(title, synonyms) ILIKE $2`;
     params.push(`%${term}%`);
   }
 
@@ -37,7 +32,8 @@ router.get("/search", async (req, res) => {
         FROM
             anime
         ${whereClause}
-        OFFSET $1 LIMIT 10`,
+        ORDER BY title
+        OFFSET $1 LIMIT ${perPage}`,
     params
   );
 

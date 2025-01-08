@@ -15,7 +15,7 @@ function RouteComponent() {
 
 
     async function fetchAnime() {
-        setLoading(true)
+        // setLoading(true) 
         const params = new URLSearchParams({
             term: searchTerm,
             page: page
@@ -43,14 +43,8 @@ function RouteComponent() {
         </div>
         <div>
             {
-            () => {
-                if (loading === false) {
-                    results.map((anime, index) => (
-                    <div key={index}>{anime.title}</div>)) 
-                } else {
-                    <div>Loading...</div>
-                }
-        }}
+            loading ? <div>Loading...</div> : results.map((anime, index) => (<div key={index}>{anime.title}</div>))
+            }
         </div>
         <div>
             <button
@@ -64,14 +58,14 @@ function RouteComponent() {
                 Previous
             </button>
             <button
-            onClick={setPage(page + 1)}
+            onClick={() => setPage(page + 1)}
             >
                 Next
             </button>
 
 
             <div>
-                Page {page}
+                Page {page + 1}
             </div>
         </div>
 

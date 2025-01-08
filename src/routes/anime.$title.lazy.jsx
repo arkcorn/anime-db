@@ -12,6 +12,10 @@ function AnimeComponent() {
     <div>
       {title} <br />
       <Link to="/search">To Search</Link>
+
+      <div>
+        
+      </div>
     </div>
   )
 }

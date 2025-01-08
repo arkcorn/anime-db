@@ -1,5 +1,6 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { ListContext } from '../contexts';
 
 export const Route = createLazyFileRoute('/search')({
   component: RouteComponent,
@@ -11,7 +12,7 @@ function RouteComponent() {
     const [results, setResults] = useState([])
     const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(true)
-    const [list, setList] = useState([])
+    const [list, setList] = useContext(ListContext)
 
     async function fetchAnime() {
         // setLoading(true) 

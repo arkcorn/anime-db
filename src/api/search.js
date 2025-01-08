@@ -17,7 +17,7 @@ router.get("/search", async (req, res) => {
   page = page ? page : 0;
   // console.log("Search anime", term, page);
 
-  const perPage = 40;
+  const perPage = 10;
 
   let whereClause = "";
   const params = [page * perPage];

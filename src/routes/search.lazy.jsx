@@ -1,6 +1,5 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { useState, useEffect } from "react"
-
 
 export const Route = createLazyFileRoute('/search')({
   component: RouteComponent,
@@ -35,12 +34,16 @@ function RouteComponent() {
   return (
     <div>
         <div>
+            <Link to="/">Home</Link>
+        </div>
+        <div>
             <input type='text' placeholder='Search Anime' value={searchTerm} 
             onChange={(e) => {setSearchTerm(e.target.value)}} />
         </div>
         <div>
             {loading ? <div>Loading...</div> : results.map((anime, index) => (<div key={index}>
-                {anime.title} 
+                <img src={anime.thumbnail}/>
+                <Link to="/anime/$title" params={{ title: anime.title }}>{anime.title} </Link>
                 <label>
                     <input type="checkbox" id={anime.title}
                     onChange={

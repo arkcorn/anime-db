@@ -2,10 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const app = express();
-const searchRouter = require("./src/api/search");
+const pgRouter = require("./src/api/pg");
 const perplexityRouter = require("./src/api/perplexity");
 
-app.use("/api", searchRouter);
+app.use("/api", pgRouter);
 app.use("/api", perplexityRouter);
 
 app.listen(process.env.PORT, () => {

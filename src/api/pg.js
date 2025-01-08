@@ -12,6 +12,18 @@ const pool = new pg.Pool({
   database: process.env.DB_NAME,
 });
 
+router.get("/animeData", async (req, res) => {
+  const { title } = req.query;
+
+  const { rows } = await pool.query(
+    `
+    SELECT * FROM anime WHERE title=$1
+    `,
+    [title]
+  );
+  res.json({ rows });
+});
+
 router.get("/search", async (req, res) => {
   let { term, page } = req.query;
   page = page ? page : 0;

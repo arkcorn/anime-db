@@ -8,7 +8,7 @@ import { ListContext, LoadedContext } from "../contexts";
 export const Route = createRootRoute({
     component: () => {
       const listHook = useState([])
-      const loadedHook = useState({})
+      const loadedHook = useState({}) // TODO, move from object to psql database
       return (
         <>
           <ListContext.Provider value={listHook}>

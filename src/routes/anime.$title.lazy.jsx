@@ -1,56 +1,69 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import { useContext, useState, useEffect } from "react";
-import { LoadedContext } from '../contexts';
-
+import { useContext, useState, useEffect } from 'react'
+import { LoadedContext } from '../contexts'
 
 export const Route = createLazyFileRoute('/anime/$title')({
   component: AnimeComponent,
 })
 
 function AnimeComponent() {
-
-  const { title } = Route.useParams()
-  const [loaded, setLoaded] = useContext(LoadedContext);
+  // TODO access postgres instead of routing... 
+  const params = Route.useParams() // TODO: find out why JUST TITLE is being passed in
+  const { title } = params
+  const [loaded, setLoaded] = useContext(LoadedContext)
   const [loading, setLoading] = useState(false)
+  const [anime, setAnime] = useState({})
 
-  console.log(loaded[title])
+  // console.log(loaded[title])
   // console.log(typeof(title))
 
   function checkLoaded() {
     if (title in loaded) {
       return true
     }
-
     return false
   }
 
   useEffect(() => {
     generateDesc()
+    getDB()
   }, [])
 
+  async function getDB() {
+    const response = await fetch(`/api/animeData?title=${title}`)
+    const { rows } = await response.json()
+    setAnime(rows[0])
+  }
 
   async function generateDesc() {
     setLoading(true)
     if (!checkLoaded()) {
-      const response = await fetch(`/api/description?title=${title}`);
-      const data = await response.json();
-      // console.log('raw data', data)
-
-      // console.log('typeof res', typeof(data.response.choices[0].message.content))
-      // console.log("data.response[0]", data.response.choices[0].message.content)
-      // console.log(data.response)
-      setLoaded({...loaded, [title]: data.response.choices[0].message.content.replace(/\[.*?\]/g, '')})
+      const response = await fetch(`/api/description?title=${title}`)
+      const data = await response.json()
+      setLoaded({
+        ...loaded,
+        [title]: data.response.choices[0].message.content.replace(
+          /\[.*?\]/g,
+          '',
+        ),
+      })
     }
     setLoading(false)
   }
 
-
   return (
     <div>
+
+      <Link to="/search">To Search</Link> <br />  
       {title} <br />
-      <Link to="/search">To Search</Link>
+      { loading ? (<div>Loading Image...</div>) :
+      (<img src={anime.picture} />)}
       <div>
-        {loading ? <div>Loading description...</div> : <div>{loaded[title]}</div> }
+        {loading ? (
+          <div>Loading description...</div>
+        ) : (
+          <div>{loaded[title]}</div>
+        )}
       </div>
     </div>
   )

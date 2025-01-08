@@ -8,6 +8,8 @@ export const Route = createLazyFileRoute('/search')({
 
 function RouteComponent() {
 
+
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([])
     const [page, setPage] = useState(0)
@@ -36,7 +38,7 @@ function RouteComponent() {
     <div>
         <div>
             <Link to="/">Home</Link>
-        </div>
+        </div>  
         <div>
             <input type='text' placeholder='Search Anime' value={searchTerm} 
             onChange={(e) => {setSearchTerm(e.target.value)}} />
@@ -44,7 +46,7 @@ function RouteComponent() {
         <div>
             {loading ? <div>Loading...</div> : results.map((anime, index) => (<div key={index}>
                 <img src={anime.thumbnail}/>
-                <Link to="/anime/$title" params={{ title: anime.title }}>{anime.title} </Link>
+                <Link to="/anime/$title" params={anime}>{anime.title} </Link>
                 <label>
                     <input type="checkbox" id={anime.title}
                     onChange={
@@ -70,7 +72,10 @@ function RouteComponent() {
             <div>Page {page + 1}</div>
         </div>
         <div>
-            List: {list}
+            List: {list.toString().replaceAll(',', ', ')}
+        </div>
+        <div>
+            {list.length ? list.length : ""}
         </div>
 
     </div>

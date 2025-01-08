@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const SearchLazyImport = createFileRoute('/search')()
+const ListLazyImport = createFileRoute('/list')()
 const IndexLazyImport = createFileRoute('/')()
 const AnimeTitleLazyImport = createFileRoute('/anime/$title')()
 
@@ -27,6 +28,12 @@ const SearchLazyRoute = SearchLazyImport.update({
   path: '/search',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/search.lazy').then((d) => d.Route))
+
+const ListLazyRoute = ListLazyImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/list.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/list': {
+      id: '/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof ListLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -72,12 +86,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/list': typeof ListLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/list': typeof ListLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
@@ -85,27 +101,30 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/list': typeof ListLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/search' | '/anime/$title'
+  fullPaths: '/' | '/list' | '/search' | '/anime/$title'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search' | '/anime/$title'
-  id: '__root__' | '/' | '/search' | '/anime/$title'
+  to: '/' | '/list' | '/search' | '/anime/$title'
+  id: '__root__' | '/' | '/list' | '/search' | '/anime/$title'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  ListLazyRoute: typeof ListLazyRoute
   SearchLazyRoute: typeof SearchLazyRoute
   AnimeTitleLazyRoute: typeof AnimeTitleLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  ListLazyRoute: ListLazyRoute,
   SearchLazyRoute: SearchLazyRoute,
   AnimeTitleLazyRoute: AnimeTitleLazyRoute,
 }
@@ -121,12 +140,16 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
+        "/list",
         "/search",
         "/anime/$title"
       ]
     },
     "/": {
       "filePath": "index.lazy.jsx"
+    },
+    "/list": {
+      "filePath": "list.lazy.jsx"
     },
     "/search": {
       "filePath": "search.lazy.jsx"

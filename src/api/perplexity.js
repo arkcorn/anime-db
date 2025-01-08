@@ -1,6 +1,6 @@
 require("dotenv").config();
-import { OpenAI } from "openai";
 
+const { OpenAI } = require("openai");
 const express = require("express");
 const router = express.Router();
 
@@ -21,8 +21,8 @@ router.get("/description", async (req, res) => {
       },
     ],
   });
-
-  res.json({ content });
+  console.log(response);
+  res.json({ response });
 });
 
 module.exports = router;

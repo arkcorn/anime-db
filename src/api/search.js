@@ -15,9 +15,9 @@ const pool = new pg.Pool({
 router.get("/search", async (req, res) => {
   let { term, page } = req.query;
   page = page ? page : 0;
-  console.log("Search anime", term, page);
+  // console.log("Search anime", term, page);
 
-  const perPage = 50;
+  const perPage = 40;
 
   let whereClause = "";
   const params = [page * perPage];
@@ -32,10 +32,12 @@ router.get("/search", async (req, res) => {
         FROM
             anime
         ${whereClause}
-        ORDER BY title
+        ORDER BY cardinality(tags) DESC, cardinality(synonyms) DESC, title
         OFFSET $1 LIMIT ${perPage}`,
     params
   );
+
+  console.log(rows);
 
   res.json({ rows }).end();
 });

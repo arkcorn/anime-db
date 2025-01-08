@@ -10,18 +10,26 @@ function RouteComponent() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([])
-
+    const [page, setPage] = useState(0)
+    const [loading, setLoading] = useState(true)
 
 
     async function fetchAnime() {
-        const response = await fetch(`/api/search?term=${searchTerm}`); // Todo: add PAGE
+        setLoading(true)
+        const params = new URLSearchParams({
+            term: searchTerm,
+            page: page
+        })
+
+        const response = await fetch(`/api/search?${params}`);
         const data = await response.json();
         setResults(data.rows)
+        setLoading(false)
     }
 
     useEffect(() => {
         fetchAnime()
-    }, [searchTerm]);
+    }, [searchTerm, page]);
 
 
   return (
@@ -32,16 +40,41 @@ function RouteComponent() {
                     setSearchTerm(e.target.value)
                 }
             } />
-            {/* <select>
-                <option>Alphabetically</option>
-                <option>Length</option>
-            </select> */}
         </div>
         <div>
-            {results.map((anime, index) => (
-                <div key={index}>{anime.title}</div>
-            ))}
+            {
+            () => {
+                if (loading === false) {
+                    results.map((anime, index) => (
+                    <div key={index}>{anime.title}</div>)) 
+                } else {
+                    <div>Loading...</div>
+                }
+        }}
         </div>
+        <div>
+            <button
+            onClick={() => {
+                if (page > 0) {
+                    setPage(page - 1)
+                }
+            }}
+            disabled={page === 0}
+            >
+                Previous
+            </button>
+            <button
+            onClick={setPage(page + 1)}
+            >
+                Next
+            </button>
+
+
+            <div>
+                Page {page}
+            </div>
+        </div>
+
     </div>
     )
 }

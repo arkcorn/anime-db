@@ -39,30 +39,15 @@ function RouteComponent() {
             onChange={(e) => {setSearchTerm(e.target.value)}} />
         </div>
 
-
-
         <div>
-            {loading ? <div>Loading...</div> : <AnimeVertList anime={results} searchBool={true} listBool={false}></AnimeVertList>}
+            {loading ? <div>Loading...</div> : <AnimeVertList anime={results} searchBool={true} listBool={false} page={page} setPage={setPage}></AnimeVertList>}
         </div>
-
-
-
-        <div>
-            <div className='w-8/12 mx-auto text-center'>
-                <button className={`m-2 border-2 p-2 rounded bg-pink-200 ${page === 0 ? '' : 'border-gray-500'}` }
-                    onClick={() => {if (page > 0) {setPage(page - 1)}}}
-                    disabled={page === 0}
-                >Previous</button> 
-                <button onClick={() => setPage(page + 1)} className='m-2 border-2 py-2 px-5 rounded bg-pink-200 border-gray-500'>Next</button>
-            </div>
-            <div>Page {page + 1}</div>
-        </div>
-        <div>
+        {/* <div>
             List: {list.toString().replaceAll(',', ', ')}
         </div>
         <div>
             {list.length ? list.length : ""}
-        </div>
+        </div> */}
 
     </div>
     )

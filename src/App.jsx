@@ -11,11 +11,11 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
-    <StrictMode>
+    {/* <StrictMode> */}
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </StrictMode>
+    {/* </StrictMode> */}
     </div>
   );
 };

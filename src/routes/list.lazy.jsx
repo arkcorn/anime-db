@@ -31,16 +31,16 @@ function RouteComponent() {
 
   useEffect(() => {
     getAnimeFromList();
-  }, [])
+  }, [page])
 
   return (
     <div>
         <div className='text-center'>
           My List
         </div>
-        {loading ? <div></div> : <AnimeVertList anime={anime} searchBool={false} listBool={true}></AnimeVertList>}
-      
-    
+        <div>
+          {loading ? <div></div> : <AnimeVertList anime={anime} searchBool={false} listBool={true} page={page} setPage={setPage}></AnimeVertList>}
+        </div>
     </div>
   )
 }

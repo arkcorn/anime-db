@@ -6,7 +6,7 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
     return (
-        <div>
+        <div className="min-h-screen bg-gradient-to-b from-blue-100 to-pink-50">
             This is the Homepage <br />
             <Link to="/search">Search</Link> <br />
             <Link to="/list">My List</Link>

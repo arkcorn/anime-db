@@ -7,9 +7,6 @@ export const Route = createLazyFileRoute('/search')({
 })
 
 function RouteComponent() {
-
-
-    
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([])
     const [page, setPage] = useState(0)
@@ -35,17 +32,17 @@ function RouteComponent() {
 
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-pink-50">
         <div>
             <Link to="/">Home</Link>
         </div>  
-        <div>
-            <input type='text' placeholder='Search Anime' value={searchTerm} className='border-black border-2 block mx-auto rounded' 
+        <div className='w-8/12 mx-auto'>
+            <input type='text' placeholder='Search Anime...' value={searchTerm} className='border-black border-2 block rounded bg-pink-100' 
             onChange={(e) => {setSearchTerm(e.target.value)}} />
         </div>
         <div className='w-8/12 mx-auto'>
             {loading ? <div>Loading...</div> : results.map((anime, index) => (<Link to="/anime/$title" key={index} params={anime} className='search-elem bg-blue-200 rounded border-blue-600 m-0.5 block'>
-                <img src={anime.thumbnail} className='inline-block p-1'/>
+                <img src={anime.thumbnail} className='inline-block p-1 w-12'/>
                 <Link to="/anime/$title" params={anime} className='text-blue-700'>{anime.title} </Link>
                 <label
                 onClick={(e) => {
@@ -68,11 +65,13 @@ function RouteComponent() {
             </Link>))}
         </div>
         <div>
-            <button
-                onClick={() => {if (page > 0) {setPage(page - 1)}}}
-                disabled={page === 0}
-            >Previous</button> 
-            <button onClick={() => setPage(page + 1)}>Next</button>
+            <div className='w-8/12 mx-auto text-center'>
+                <button className={`m-2 border-2 p-2 rounded bg-pink-200 ${page === 0 ? '' : 'border-gray-500'}` }
+                    onClick={() => {if (page > 0) {setPage(page - 1)}}}
+                    disabled={page === 0}
+                >Previous</button> 
+                <button onClick={() => setPage(page + 1)} className='m-2 border-2 py-2 px-5 rounded bg-pink-200 border-gray-500'>Next</button>
+            </div>
             <div>Page {page + 1}</div>
         </div>
         <div>

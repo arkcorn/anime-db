@@ -1,6 +1,7 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { useState, useEffect, useContext } from "react"
 import { ListContext } from '../contexts';
+import AnimeVertList from '../AnimeVertList';
 
 export const Route = createLazyFileRoute('/search')({
   component: RouteComponent,
@@ -37,33 +38,18 @@ function RouteComponent() {
             <Link to="/">Home</Link>
         </div>  
         <div className='w-8/12 mx-auto'>
-            <input type='text' placeholder='Search Anime...' value={searchTerm} className='border-black border-2 block rounded bg-pink-100' 
+            <input type='text' placeholder='Search Anime...' value={searchTerm} className='border-black border-2 block rounded bg-pink-50' 
             onChange={(e) => {setSearchTerm(e.target.value)}} />
         </div>
-        <div className='w-8/12 mx-auto'>
-            {loading ? <div>Loading...</div> : results.map((anime, index) => (<Link to="/anime/$title" key={index} params={anime} className='search-elem bg-blue-200 rounded border-blue-600 m-0.5 block'>
-                <img src={anime.thumbnail} className='inline-block p-1 w-12'/>
-                <Link to="/anime/$title" params={anime} className='text-blue-700'>{anime.title} </Link>
-                <label
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-                >
-                    <input type="checkbox" id={anime.title} className='m-2'
-                    onChange={
-                        (e) => {
-                            if (e.target.checked)
-                                setList([...list, anime.title])
-                            else 
-                                setList(list.filter(title => title !== anime.title))
-                        }
-                    }
-                    checked={list.includes(anime.title)}
-                    />
-                     Add
-                </label>
-            </Link>))}
+
+
+        
+        <div>
+            {loading ? <div>Loading...</div> : <AnimeVertList anime={results} searchBool={true} listBool={false} list={list} ></AnimeVertList>}
         </div>
+
+
+
         <div>
             <div className='w-8/12 mx-auto text-center'>
                 <button className={`m-2 border-2 p-2 rounded bg-pink-200 ${page === 0 ? '' : 'border-gray-500'}` }

@@ -1,0 +1,35 @@
+// TODO, create general list for both /list and /search 
+// /search : must have "add" button
+// /list : more complication, ideally has MAL capabilities
+import { Link } from "@tanstack/react-router"
+
+export default function AnimeVertList({ anime, searchBool, listBool, list }) { // search,list = booleans, animeList = array of anime objects (from psql)
+    return (
+        <div>
+        <div className='w-8/12 mx-auto'>
+            {anime.map((anime, index) => (<Link to="/anime/$title" key={index} params={anime} className='search-elem bg-blue-200 rounded border-blue-600 m-0.5 block'>
+                <img src={anime.thumbnail} className='inline-block p-1 w-12'/>
+                <Link to="/anime/$title" params={anime} className='text-blue-700'>{anime.title} </Link>
+                {searchBool ? <label
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+                >
+                    <input type="checkbox" id={anime.title} className='m-2'
+                    onChange={
+                        (e) => {
+                            if (e.target.checked)
+                                setList([...list, anime.title])
+                            else 
+                                setList(list.filter(title => title !== anime.title))
+                        }
+                    }
+                    checked={list.includes(anime.title)}
+                    />
+                     Add
+                </label> : <span></span>}
+            </Link>))}
+        </div>
+    </div>
+    )
+}

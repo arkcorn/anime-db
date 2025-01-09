@@ -39,6 +39,8 @@ function RouteComponent() {
           My List
         </div>
         {loading ? <div></div> : <AnimeVertList anime={anime} searchBool={false} listBool={true}></AnimeVertList>}
+      
+    
     </div>
   )
 }

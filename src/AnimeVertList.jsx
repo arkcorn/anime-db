@@ -30,7 +30,7 @@ export default function AnimeVertList({ anime, searchBool, listBool }) { // sear
                     }
                     checked={list.includes(anime.title)}
                     />
-                     Add
+                     {list.includes(anime.title) ? "Remove" : "Add"}
                 </label> : <span></span>}
             </Link>))}
         </div>

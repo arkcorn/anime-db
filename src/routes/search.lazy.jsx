@@ -33,19 +33,16 @@ function RouteComponent() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-pink-50">
-        <div>
-            <Link to="/">Home</Link>
-        </div>  
+    <div>
         <div className='w-8/12 mx-auto'>
             <input type='text' placeholder='Search Anime...' value={searchTerm} className='border-black border-2 block rounded bg-pink-50' 
             onChange={(e) => {setSearchTerm(e.target.value)}} />
         </div>
 
 
-        
+
         <div>
-            {loading ? <div>Loading...</div> : <AnimeVertList anime={results} searchBool={true} listBool={false} list={list} ></AnimeVertList>}
+            {loading ? <div>Loading...</div> : <AnimeVertList anime={results} searchBool={true} listBool={false}></AnimeVertList>}
         </div>
 
 

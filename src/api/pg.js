@@ -12,6 +12,8 @@ const pool = new pg.Pool({
   database: process.env.DB_NAME,
 });
 
+const perPage = 10;
+
 router.get("/animeData", async (req, res) => {
   const { title } = req.query;
 
@@ -24,12 +26,30 @@ router.get("/animeData", async (req, res) => {
   res.json({ rows });
 });
 
+router.get("/getList", async (req, res) => {
+  const { list, page } = req.query;
+
+  console.log(list);
+
+  const formattedList =
+    "{" +
+    list
+      .split(",")
+      .map((item) => `"${item}"`)
+      .join(",") +
+    "}";
+
+  const { rows } = await pool.query(
+    `SELECT * FROM anime WHERE title = ANY($2) OFFSET $1 LIMIT ${perPage}`,
+    [page * perPage, formattedList]
+  );
+  res.json({ rows });
+});
+
 router.get("/search", async (req, res) => {
   let { term, page } = req.query;
   page = page ? page : 0;
   // console.log("Search anime", term, page);
-
-  const perPage = 10;
 
   let whereClause = "";
   const params = [page * perPage];
@@ -49,7 +69,7 @@ router.get("/search", async (req, res) => {
     params
   );
 
-  console.log(rows);
+  // console.log(rows);
 
   res.json({ rows }).end();
 });

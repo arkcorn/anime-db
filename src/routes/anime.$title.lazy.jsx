@@ -52,9 +52,7 @@ function AnimeComponent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-pink-50">
-
-      <Link to="/search">To Search</Link> <br />  
+    <div>
       {title} <br />
       { loading ? (<div>Loading Image...</div>) :
       (<img src={anime.picture} />)}

@@ -10,9 +10,23 @@ export const Route = createLazyFileRoute('/list')({
 function RouteComponent() {
   const [list, setList] = useContext(ListContext)
   const [anime, setAnime] = useState([])
+  const [page, setPage] = useState(0)
+  const [loading, setLoading] = useState(true)
+
 
   async function getAnimeFromList() {
-    // TODO
+    setLoading(true)
+    if (list.length !== 0) { 
+      const params = new URLSearchParams({
+        list: list,
+        page: page
+      })
+
+      const response = await fetch(`/api/getList?${params}`)
+      const data = await response.json()
+      setAnime(data.rows)
+    }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -20,11 +34,11 @@ function RouteComponent() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-pink-50">
-        <div>
-            <Link to="/">Home</Link>
+    <div>
+        <div className='text-center'>
+          My List
         </div>
-        <AnimeVertList anime={[/*  TODO */]} searchBool={false} listBool={true} list={list}></AnimeVertList>
+        {loading ? <div></div> : <AnimeVertList anime={anime} searchBool={false} listBool={true}></AnimeVertList>}
     </div>
   )
 }

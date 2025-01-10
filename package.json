@@ -26,6 +26,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.59.13",
     "@tanstack/react-router": "^1.65.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "openai": "^4.77.3",

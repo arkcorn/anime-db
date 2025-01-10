@@ -17,6 +17,8 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const SearchLazyImport = createFileRoute('/search')()
+const RegisterLazyImport = createFileRoute('/register')()
+const LoginLazyImport = createFileRoute('/login')()
 const ListLazyImport = createFileRoute('/list')()
 const IndexLazyImport = createFileRoute('/')()
 const AnimeTitleLazyImport = createFileRoute('/anime/$title')()
@@ -28,6 +30,18 @@ const SearchLazyRoute = SearchLazyImport.update({
   path: '/search',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/search.lazy').then((d) => d.Route))
+
+const RegisterLazyRoute = RegisterLazyImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/register.lazy').then((d) => d.Route))
+
+const LoginLazyRoute = LoginLazyImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
 const ListLazyRoute = ListLazyImport.update({
   id: '/list',
@@ -65,6 +79,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ListLazyImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -87,6 +115,8 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/list': typeof ListLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
@@ -94,6 +124,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/list': typeof ListLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
@@ -102,22 +134,39 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/list': typeof ListLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
   '/search': typeof SearchLazyRoute
   '/anime/$title': typeof AnimeTitleLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/list' | '/search' | '/anime/$title'
+  fullPaths:
+    | '/'
+    | '/list'
+    | '/login'
+    | '/register'
+    | '/search'
+    | '/anime/$title'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/list' | '/search' | '/anime/$title'
-  id: '__root__' | '/' | '/list' | '/search' | '/anime/$title'
+  to: '/' | '/list' | '/login' | '/register' | '/search' | '/anime/$title'
+  id:
+    | '__root__'
+    | '/'
+    | '/list'
+    | '/login'
+    | '/register'
+    | '/search'
+    | '/anime/$title'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ListLazyRoute: typeof ListLazyRoute
+  LoginLazyRoute: typeof LoginLazyRoute
+  RegisterLazyRoute: typeof RegisterLazyRoute
   SearchLazyRoute: typeof SearchLazyRoute
   AnimeTitleLazyRoute: typeof AnimeTitleLazyRoute
 }
@@ -125,6 +174,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ListLazyRoute: ListLazyRoute,
+  LoginLazyRoute: LoginLazyRoute,
+  RegisterLazyRoute: RegisterLazyRoute,
   SearchLazyRoute: SearchLazyRoute,
   AnimeTitleLazyRoute: AnimeTitleLazyRoute,
 }
@@ -141,6 +192,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/list",
+        "/login",
+        "/register",
         "/search",
         "/anime/$title"
       ]
@@ -150,6 +203,12 @@ export const routeTree = rootRoute
     },
     "/list": {
       "filePath": "list.lazy.jsx"
+    },
+    "/login": {
+      "filePath": "login.lazy.jsx"
+    },
+    "/register": {
+      "filePath": "register.lazy.jsx"
     },
     "/search": {
       "filePath": "search.lazy.jsx"
